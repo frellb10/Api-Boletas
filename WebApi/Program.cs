@@ -14,6 +14,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// ------------------------------------------------------------
+// Configurar CORS
+// ------------------------------------------------------------
+var corsPolicy = "_allowAll";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsPolicy,
+        policy =>
+        {
+            policy
+                .AllowAnyOrigin()    
+                .AllowAnyHeader() 
+                .AllowAnyMethod();  .
+        });
+});
+
+
 // Services for Dependency Injection
 
 // Repositorio
