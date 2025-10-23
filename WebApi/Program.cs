@@ -61,14 +61,12 @@ else
     var postgresSettings = new PostgresSettings
     {
         Host = Environment.GetEnvironmentVariable("HOST") ?? string.Empty,
-        Port = Environment.GetEnvironmentVariable("PORT") ?? "5432",
         Database = Environment.GetEnvironmentVariable("DATABASE") ?? string.Empty,
         UserName = Environment.GetEnvironmentVariable("USER") ?? string.Empty,
         Password = Environment.GetEnvironmentVariable("PASSWORD") ?? string.Empty
     };
 
     var connectionString = $"Host={postgresSettings.Host};" +
-        $"Port={postgresSettings.Port};" +
         $"Database={postgresSettings.Database};" +
         $"Username={postgresSettings.UserName};" +
         $"Password={postgresSettings.Password}; Ssl Mode=Require;Trust Server Certificate=true;";
