@@ -18,18 +18,18 @@ builder.Services.AddSwaggerGen();
 // Configurar CORS
 // ------------------------------------------------------------
 var corsPolicy = "_allowAll";
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: corsPolicy,
         policy =>
         {
             policy
-                .AllowAnyOrigin()    
-                .AllowAnyHeader() 
-                .AllowAnyMethod();  
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
         });
 });
-
 
 // Services for Dependency Injection
 
@@ -39,19 +39,18 @@ builder.Services.AddScoped<IEventoRepository, EventoRepository>();
 // Servicio
 builder.Services.AddScoped<IEventoService, EventoService>();
 
-
 // Configuracion del secret Json
 if (builder.Environment.IsDevelopment())
 {
     var postgresSettings = builder.Configuration
-        .GetSection("secreto").
-        Get<PostgresSettings>();
+        .GetSection("secreto")
+        .Get<PostgresSettings>();
 
     var connectionString = $"Host={postgresSettings?.Host};" +
         $"Port={postgresSettings?.Port};" +
         $"Database={postgresSettings?.Database};" +
         $"Username={postgresSettings?.UserName};" +
-        $"Password={postgresSettings?.Password}; Ssl Mode=Require;Trust Server Certificate=true;" ;
+        $"Password={postgresSettings?.Password}; Ssl Mode=Require;Trust Server Certificate=true;";
 
     builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
     builder.Services.Configure<PostgresSettings>(builder.Configuration.GetSection("secreto"));
@@ -75,6 +74,7 @@ else
 }
 
 var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -88,6 +88,9 @@ if (app.Environment.IsProduction())
 }
 
 app.UseHttpsRedirection();
+
+// Se aplica la política de CORS antes de Authorization y después de Https
+app.UseCors(corsPolicy);
 
 app.UseAuthorization();
 
